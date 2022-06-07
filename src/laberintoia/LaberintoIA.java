@@ -8,6 +8,8 @@ package laberintoia;
 import Algoritmos.BusquedaAmplitud;
 import Algoritmos.BusquedaCosto;
 import Model.Matriz;
+import Model.Nodo;
+import java.util.ArrayList;
 
 /**
  *
@@ -66,6 +68,45 @@ public class LaberintoIA {
         }
     }
 
+    public void ejemploNodoGuardar(int[][] m, ArrayList nodo,  Nodo padre, int cont) {
+
+       
+
+        if (cont < 4) {
+           
+
+            Nodo n2 = new Nodo(m, padre, "IZ", padre.getProfundidad() + 1);
+
+            Nodo n3 = new Nodo(m, padre, "DER", padre.getProfundidad() + 1);
+
+            
+
+            nodo.add(n2);
+            ejemploNodoGuardar(m, nodo, n2, cont);
+
+            nodo.add(n3);
+            //ejemploNodoGuardar(m,nodo, n3, cont);
+
+            /*
+            for (int i = 0; i < 10; i++) {
+                nodo.add(new Nodo(m, n, inicial, fila));
+            }
+             */
+            Nodo Eli = (Nodo) nodo.remove(0);
+            System.err.println("" + Eli.getOperador());
+            Nodo Eli2 = (Nodo) nodo.remove(0);
+            System.err.println("" + Eli2.getOperador());
+
+            //n.verficarAmplitud(m, n, fila, colum);
+            /*for (int i = 0; i < nodo.size(); i++) {
+           System.out.println(nodo.get(i).getOperador());
+            
+        }*/
+            cont++;
+        }
+
+    }
+
     public static void main(String[] args) {
 
         LaberintoIA game = new LaberintoIA();
@@ -74,9 +115,17 @@ public class LaberintoIA {
         int colum = game.matriz.EncontrarJugador(m)[1];
         String inicial = game.bsq.verificar(fila, colum);
         //game.AgenteBuquedaAmplitud(inicial, m, 0);
-
-        game.AgenteBusquedaCostoUniforme(m, 0);
-
+        ArrayList<Nodo> data = new ArrayList<>();
+        Nodo n = new Nodo(m, null, null, 0);
+        String g = n.verficarAmplitud(m, n);
+        //System.out.println("Operador "+g);
+        /*for (int i = 0; i < data.size(); i++) {
+           System.out.println(data.get(i).getOperador());
+            
+        }*/
+        //game.ejemploNodoGuardar(m, nodo, n, colum);
+        //matriz.mostrarMundo(n.getEstado());
+        //game.AgenteBusquedaCostoUniforme(m, 0);
     }
 
 }

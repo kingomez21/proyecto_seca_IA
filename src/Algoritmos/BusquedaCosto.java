@@ -103,7 +103,12 @@ public class BusquedaCosto {
             int izquierda = this.Estado[fila][movColumIz];
 
             if (izquierda != 1 && izquierda != 7 && izquierda != 2) {
-                iz = this.Costo + izquierda;
+                if(izquierda == 6){
+                    iz = this.Costo + 4;
+                } else {
+                    iz = this.Costo + 1;
+                }
+                
             } else {
                 iz = 1000;
             }
@@ -119,7 +124,12 @@ public class BusquedaCosto {
             int arriba = this.Estado[movFilaAr][colum];
 
             if (arriba != 1 && arriba != 7 && arriba != 2) {
-                arr = this.Costo + arriba;
+                if(arriba == 6){
+                    arr = this.Costo + 4;
+                }else {
+                    arr = this.Costo + 1;
+                }
+                
             } else {
                 arr = 1000;
             }
@@ -136,7 +146,13 @@ public class BusquedaCosto {
             int derecha = this.Estado[fila][movColumDer];
 
             if (derecha != 1 && derecha != 7 && derecha != 2) {
-                der = this.Costo + derecha;
+                if(derecha == 6){
+                    der = this.Costo + 4;
+                }else {
+                    der = this.Costo + 1;
+                }
+                    
+                
             } else {
                 der = 1000;
             }
@@ -153,13 +169,22 @@ public class BusquedaCosto {
             int abajo = this.Estado[movFilaAba][colum];
 
             if (abajo != 1 && abajo != 7 && abajo != 2) {
-                aba = this.Costo + abajo;
+                if(abajo == 6){
+                    aba = this.Costo + 4;
+                }else {
+                    aba = this.Costo + 1;
+                }
             } else {
                 aba = 1000;
             }
 
         }
 
+        System.err.println(arr);
+        System.err.println(iz);
+        System.err.println(der);
+        System.err.println(aba);
+        
         if (iz != 1000) {
             if (iz <= arr && iz <= der && iz <= aba) {
                 mover = "IZ";
