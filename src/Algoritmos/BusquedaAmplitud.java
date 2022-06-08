@@ -38,6 +38,7 @@ public class BusquedaAmplitud {
         this.Estado[fila] [movColum] = 2;
         this.operador = "izquierda";
         this.Nodo = "("+fila+","+movColum+ ")";
+        this.profundidad += 1;
         return this.Estado;
     }
     
@@ -55,6 +56,7 @@ public class BusquedaAmplitud {
         this.Estado[movFila][colum] = 2;
         this.operador = "arriba";
         this.Nodo = "("+movFila+","+colum+ ")";
+        this.profundidad += 1;
         return this.Estado;
     }
     
@@ -72,7 +74,7 @@ public class BusquedaAmplitud {
         this.Estado[fila] [movColum] = 2;
         this.operador = "derecha";
         this.Nodo = "("+fila+","+movColum+ ")";
-        
+        this.profundidad += 1;
         return this.Estado;
     }
     
@@ -90,6 +92,7 @@ public class BusquedaAmplitud {
         this.Estado[movFila][colum] = 2;
         this.operador = "abajo";
         this.Nodo = "("+movFila+","+colum+ ")";
+        this.profundidad += 1;
         return this.Estado;
     }
     
@@ -100,6 +103,9 @@ public class BusquedaAmplitud {
         int movColumIz = colum - 1;
         
         if(movColumIz >= 0){
+            if(movColumIz > 9){
+                movColumIz = colum;
+            }
             int izquierda = this.Estado[fila][movColumIz];
             if(izquierda != 1 && izquierda != 7){
                 movimientos += "1";
@@ -114,6 +120,9 @@ public class BusquedaAmplitud {
         int movFilaAr = fila - 1;
         
         if(movFilaAr >= 0){
+            if(movFilaAr > 9){
+                movFilaAr = fila;
+            }
             int arriba = this.Estado[movFilaAr][colum];
             if(arriba != 1 && arriba != 7){
                 movimientos += "1";
@@ -127,6 +136,10 @@ public class BusquedaAmplitud {
         int movColumDer = colum + 1;
         
         if(movColumDer >= 0){
+            if(movColumDer > 9){
+                movColumDer = colum;
+            } 
+            
             int derecha = this.Estado[fila][movColumDer];
             if(derecha != 1 && derecha != 7){
                 movimientos += "1";
@@ -197,8 +210,30 @@ public class BusquedaAmplitud {
             return this.moverDerecha(fila, colum);
         }
         
+        if(movimientos.equalsIgnoreCase("1100")){
+            return this.moverIzquierda(fila, colum);
+        }
+        
+        if(movimientos.equalsIgnoreCase("1110")){
+            return this.moverIzquierda(fila, colum);
+        }
+        
+        if(movimientos.equalsIgnoreCase("1101")){
+            return this.moverIzquierda(fila, colum);
+        }
+        
+        if(movimientos.equalsIgnoreCase("1011")){
+            return this.moverDerecha(fila, colum);
+        }
+        
+        if(movimientos.equalsIgnoreCase("0101")){
+            return this.moverAbajo(fila, colum);
+        }
+        
         return this.Estado;
     }
+    
+    //public 
     
     public int[][] getEstado(){
         return this.Estado;
