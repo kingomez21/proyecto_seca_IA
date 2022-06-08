@@ -114,11 +114,17 @@ public class LaberintoIA {
         int fila = game.matriz.EncontrarJugador(m)[0];
         int colum = game.matriz.EncontrarJugador(m)[1];
         String inicial = game.bsq.verificar(fila, colum);
+        //System.err.println(inicial);
+        ArrayList<Nodo> cola = new ArrayList<>();
+        Nodo padre = new Nodo(m, null, null, 0);
+        game.bsq.verificarAmplitudV1(cola, padre);
+        //game.bsq.verificarAmplitud(m, inicial);
+                
         //game.AgenteBuquedaAmplitud(inicial, m, 0);
-        ArrayList<Nodo> data = new ArrayList<>();
-        Nodo n = new Nodo(m, null, null, 0);
-        String g = n.verficarAmplitud(m, n);
-        //System.out.println("Operador "+g);
+        //ArrayList<Nodo> data = new ArrayList<>();
+        //Nodo n = new Nodo(m, null, null, 0);
+        //Nodo g = n.verficarAmplitud(m, null);
+        //System.out.println("Operador "+g.getProfundidad());
         /*for (int i = 0; i < data.size(); i++) {
            System.out.println(data.get(i).getOperador());
             
