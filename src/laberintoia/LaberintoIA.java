@@ -117,7 +117,7 @@ public class LaberintoIA {
         //System.err.println(inicial);
         ArrayList<Nodo> cola = new ArrayList<>();
         Nodo padre = new Nodo(m, null, null, 0);
-        game.bsq.verificarAmplitudV1(cola, padre);
+        game.bsq.verificarAmplitud(cola, padre);
         //game.bsq.verificarAmplitud(m, inicial);
                 
         //game.AgenteBuquedaAmplitud(inicial, m, 0);
