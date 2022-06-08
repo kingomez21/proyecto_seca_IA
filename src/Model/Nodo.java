@@ -13,13 +13,17 @@ import java.util.ArrayList;
  */
 public class Nodo {
 
-    ArrayList<Nodo> nodo = new ArrayList<>();
-    Matriz matriz = new Matriz();
+    //ArrayList<Nodo> nodo = new ArrayList<>();
+    //Matriz matriz = new Matriz();
     int Estado[][] = new int[10][10];
     Nodo padre;
     String operador;
     int profundidad;
     int costo;
+    
+    int posFila;
+    int posColum;
+           
 
     public Nodo(int[][] estado, Nodo padre, String operador, int profundidad) {
         this.Estado = estado;
@@ -27,17 +31,98 @@ public class Nodo {
         this.operador = operador;
         this.profundidad = profundidad;
     }
+    
+    public Nodo(Nodo padre, String operador, int profundidad, int posFil, int posCol){
+        this.padre = padre;
+        this.operador = operador;
+        this.profundidad = profundidad;
+        this.posFila = posFil;
+        this.posColum = posCol;
+    }
+    
+    
+/*
+    public int[][] moverIzquierda(int[][] estado, int fila, int colum) {
+        int fil =0;
+        int movColum = colum - 1;
 
-    public String verficarAmplitud(int[][] estado_inicial, Nodo padre) {
+        if (movColum < 0) {
+            movColum = 0;
+        } else if (movColum > 9) {
+            movColum = 9;
+        }
+
+        estado[fila][colum] = 7;
+        estado[fila][movColum] = 2;
+        /*while (fil < 10) {
+            for (int j = 0; j < 10; j++) {
+                System.out.print("" + this.Estado[fil][j] + " ");
+            }
+            System.out.println();
+            fil++;
+        }
+        return estado;
+    }
+
+    public int[][] moverArriba(int [][] estado, int fila, int colum) {
+        int movFila = fila - 1;
+
+        if (movFila < 0) {
+            movFila = 0;
+        } else if (movFila > 9) {
+            movFila = 9;
+        }
+
+        estado[fila][colum] = 7;
+        estado[movFila][colum] = 2;
+        return estado;
+    }
+
+    public int[][] moverDerecha(int [][] estado, int fila, int colum) {
+        int movColum = colum + 1;
+
+        if (movColum < 0) {
+            movColum = 0;
+        } else if (movColum > 9) {
+            movColum = 9;
+        }
+
+        estado[fila][colum] = 7;
+        estado[fila][movColum] = 2;
+        return estado;
+    }
+
+    public int[][] moverAbajo(int [][] estado, int fila, int colum) {
+        int movFila = fila + 1;
+
+        if (movFila < 0) {
+            movFila = 0;
+        } else if (movFila > 9) {
+            movFila = 9;
+        }
+
+        estado[fila][colum] = 7;
+        estado[movFila][colum] = 2;
+        return estado;
+    }
+
+    public Nodo verficarAmplitud(int[][] estado_inicial, Nodo pad) {
 
         int cont = 0, fila, colum;
         int fil = 0;
-        //Nodo padre = new Nodo(estado_inicial, null, null, 0);
-        nodo.add(padre);
+        Nodo padre = new Nodo(estado_inicial, null, null, 0);
+        nodo.add(padre); 
 
-        while (cont < 3) {
+        while (cont < 5) {
             Nodo nodoExpandido = nodo.remove(0);
-            System.err.println(nodoExpandido.getOperador());
+            System.err.println(nodoExpandido.getProfundidad());
+            while (fil < 10) {
+                for (int j = 0; j < 10; j++) {
+                    System.out.print("" + nodoExpandido.getEstado()[fil][j] + " ");
+                }
+                System.out.println();
+                fil++;
+            }
             fila = matriz.EncontrarJugador(nodoExpandido.getEstado())[0];
             colum = matriz.EncontrarJugador(nodoExpandido.getEstado())[1];
             System.out.println(fila);
@@ -58,21 +143,13 @@ public class Nodo {
                 }
 
                 int izquierda = nodoExpandido.getEstado()[fila][movColumIz];
-                int[][] estadoIZ = new int[10][10];
 
                 System.err.println(izquierda);
                 if (izquierda != 1 && izquierda != 7 && izquierda != 2) {
-                    estadoIZ = nodoExpandido.getEstado();
-                    estadoIZ[fila][colum] = 7;
-                    estadoIZ[fila][movColumIz] = 2;
-                    while (fil < 10) {
-                        for (int j = 0; j < 10; j++) {
-                            System.out.print("" + estadoIZ[fil][j] + " ");
-                        }
-                        System.out.println();
-                        fil++;
-                    }
-                    nodo.add(new Nodo(estadoIZ, nodoExpandido, "IZ", nodoExpandido.profundidad + 1));
+
+                    nodo.add(new Nodo(moverIzquierda(estado_inicial, fila, colum), nodoExpandido, "IZ", nodoExpandido.profundidad + 1));
+                    nodoExpandido.getEstado()[fila][colum] = estado_inicial[fila][colum];
+                    
                 }
 
             }
@@ -86,14 +163,10 @@ public class Nodo {
                 int arriba = nodoExpandido.getEstado()[movFilaAr][colum];
                 System.err.println(arriba);
 
-                int[][] estadoARR = new int[10][10];
-
                 if (arriba != 1 && arriba != 7 && arriba != 7) {
-                    estadoARR = nodoExpandido.getEstado();
-                    estadoARR[fila][colum] = 7;
-                    estadoARR[movFilaAr][colum] = 2;
 
-                    nodo.add(new Nodo(estadoARR, nodoExpandido, "ARR", nodoExpandido.profundidad + 1));
+                    nodo.add(new Nodo(this.moverArriba(estado_inicial,fila, colum), nodoExpandido, "ARR", nodoExpandido.profundidad + 1));
+                    nodoExpandido.getEstado()[fila][colum] = estado_inicial[fila][colum];
                 }
             }
 
@@ -107,14 +180,10 @@ public class Nodo {
                 int derecha = nodoExpandido.getEstado()[fila][movColumDer];
                 System.err.println(derecha);
 
-                int[][] estadoDER = new int[10][10];
-
                 if (derecha != 1 && derecha != 7 && derecha != 2) {
-                    estadoDER = nodoExpandido.getEstado();
-                    estadoDER[fila][colum] = 7;
-                    estadoDER[fila][movColumDer] = 2;
 
-                    nodo.add(new Nodo(estadoDER, nodoExpandido, "DER", nodoExpandido.profundidad + 1));
+                    nodo.add(new Nodo(moverDerecha(estado_inicial, fila, colum), nodoExpandido, "DER", nodoExpandido.profundidad + 1));
+                    nodoExpandido.getEstado()[fila][colum] = estado_inicial[fila][colum];
                 }
 
             }
@@ -129,34 +198,41 @@ public class Nodo {
                 int abajo = nodoExpandido.getEstado()[movFilaAba][colum];
                 System.err.println(abajo);
 
-                int[][] estadoABA = new int[10][10];
-
                 if (abajo != 1 && abajo != 7 && abajo != 2) {
-                    estadoABA = nodoExpandido.getEstado();
-                    estadoABA[fila][colum] = 7;
-                    estadoABA[movFilaAba][colum] = 2;
 
-                    nodo.add(new Nodo(estadoABA, nodoExpandido, "ABA", nodoExpandido.profundidad + 1));
+                    nodo.add(new Nodo(this.moverAbajo(estado_inicial, fila, colum), nodoExpandido, "ABA", nodoExpandido.profundidad + 1));
+                    nodoExpandido.getEstado()[fila][colum] = estado_inicial[fila][colum];
                 }
             }
 
-            /*for (int i = 0; i < nodo.size(); i++) {
-                System.out.println(nodo.get(i).getOperador());
-
-            }*/
+            for (int i = 0; i < nodo.size(); i++) {
+                System.out.print(nodo.get(i).getOperador()+" - ");
+                
+            }
+            System.out.println();
             cont++;
             fil = 0;
         }
-        return nodo.get(0).getOperador();
+        return nodo.get(0);
+    }*/
+
+    public int getPosFila() {
+        return posFila;
     }
 
-    public ArrayList<Nodo> getNodo() {
-        return nodo;
+    public void setPosFila(int posFila) {
+        this.posFila = posFila;
     }
 
-    public void setNodo(ArrayList<Nodo> nodo) {
-        this.nodo = nodo;
+    public int getPosColum() {
+        return posColum;
     }
+
+    public void setPosColum(int posColum) {
+        this.posColum = posColum;
+    }
+
+    
 
     public int[][] getEstado() {
         return Estado;
