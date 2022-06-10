@@ -20,6 +20,7 @@ public class LaberintoIA {
     Matriz matriz;
     BusquedaAmplitud bsq;
     BusquedaCosto bsqC;
+    ArrayList<Nodo> listaMovimientosAmplitud;
 
     public LaberintoIA() {
 
@@ -27,6 +28,7 @@ public class LaberintoIA {
         matriz.CargarMundo();
         bsq = new BusquedaAmplitud(matriz.getMatriz());
         bsqC = new BusquedaCosto(matriz.getMatriz());
+        listaMovimientosAmplitud = new ArrayList<>();
 
     }
 
@@ -45,6 +47,69 @@ public class LaberintoIA {
             }
         } catch (IndexOutOfBoundsException e) {
             System.err.print("El Jugador quedo encerrado");
+        }
+
+    }
+
+    public void AgenteAmplitud(int[][] m) {
+        ArrayList<Nodo> cola = new ArrayList<>();
+        Nodo padre = new Nodo(m, null, '0', null, 0);
+        Nodo encontrado = null;
+        bsq.verificarAmplitudV1(cola, padre);
+        System.err.println("" + bsq.getNodosExpandidos().size());
+        for (int i = 1; i < bsq.getNodosExpandidos().size(); i++) {
+            if (bsq.getNodosExpandidos().get(i).getMeta() == '5') {
+                encontrado = bsq.getNodosExpandidos().get(i);
+                System.out.print("Operador del padre: " + bsq.getNodosExpandidos().get(i).getPadre().getPadre().getPadre().getOperador()
+                        + " FilPadre: " + bsq.getNodosExpandidos().get(i).getPadre().getPadre().getPadre().getPosFila()
+                        + " ColumPadre: " + bsq.getNodosExpandidos().get(i).getPadre().getPadre().getPadre().getPosColum()
+                        + " Operador: " + bsq.getNodosExpandidos().get(i).getOperador()
+                        + " posF: " + bsq.getNodosExpandidos().get(i).getPosFila()
+                        + " Colum: " + bsq.getNodosExpandidos().get(i).getPosColum() + "\n");
+
+            }
+
+        }
+
+        movimientosAmplitud(encontrado);
+    }
+
+    public void movimientosAmplitud(Nodo meta) {
+        if (meta.getOperador() != null) {
+            Nodo recorridoNodo = meta;
+            listaMovimientosAmplitud.add(meta);
+            movimientosAmplitud(meta.getPadre());
+        }
+
+    }
+
+    public void recorridoAmplitud(int matris[][], int fl, int col, int contador, int pos) {
+
+        
+        int fila = 0, colum = 0;
+
+        if (contador < listaMovimientosAmplitud.size()) {
+            pos--;
+            
+            if (contador == 0) {
+                fila = fl;
+                colum = col;
+            } else {
+                fila = matriz.EncontrarJugador(matris)[0];
+                colum = matriz.EncontrarJugador(matris)[1];
+            }
+            //System.out.println(""+listaMovimientosAmplitud.get(pos).getOperador());
+            //listaMovimientosAmplitud.get(pos).getPosColum();
+            //int fila = matriz.EncontrarJugador(matris)[0];
+            //int colum = matriz.EncontrarJugador(matris)[1];
+            System.err.println("Fila: " + fila);
+            System.err.println("Columna: " + colum);
+            int[][] estadoMov = bsq.moverJugador(listaMovimientosAmplitud.get(pos).getOperador(), fila, colum);
+            matriz.mostrarMundo(estadoMov);
+            System.out.println();
+            contador++;
+            
+            recorridoAmplitud(estadoMov, fila, colum, contador, pos);
         }
 
     }
@@ -68,58 +133,32 @@ public class LaberintoIA {
         }
     }
 
-    public void ejemploNodoGuardar(int[][] m, ArrayList nodo,  Nodo padre, int cont) {
-
-       
-
-        if (cont < 4) {
-           
-
-            Nodo n2 = new Nodo(m, padre, "IZ", padre.getProfundidad() + 1);
-
-            Nodo n3 = new Nodo(m, padre, "DER", padre.getProfundidad() + 1);
-
-            
-
-            nodo.add(n2);
-            ejemploNodoGuardar(m, nodo, n2, cont);
-
-            nodo.add(n3);
-            //ejemploNodoGuardar(m,nodo, n3, cont);
-
-            /*
-            for (int i = 0; i < 10; i++) {
-                nodo.add(new Nodo(m, n, inicial, fila));
-            }
-             */
-            Nodo Eli = (Nodo) nodo.remove(0);
-            System.err.println("" + Eli.getOperador());
-            Nodo Eli2 = (Nodo) nodo.remove(0);
-            System.err.println("" + Eli2.getOperador());
-
-            //n.verficarAmplitud(m, n, fila, colum);
-            /*for (int i = 0; i < nodo.size(); i++) {
-           System.out.println(nodo.get(i).getOperador());
-            
-        }*/
-            cont++;
-        }
-
-    }
-
     public static void main(String[] args) {
 
         LaberintoIA game = new LaberintoIA();
         int[][] m = game.matriz.getMatriz();
         int fila = game.matriz.EncontrarJugador(m)[0];
         int colum = game.matriz.EncontrarJugador(m)[1];
-        String inicial = game.bsq.verificar(fila, colum);
+        System.err.println("" + fila);
+        System.err.println("" + colum);
+        //String inicial = game.bsq.verificar(fila, colum);
+        game.AgenteAmplitud(m);
+        game.matriz.CargarMundo();
+        int [][] m2 = game.matriz.getMatriz();
+        game.recorridoAmplitud(m2, fila, colum, 0, game.listaMovimientosAmplitud.size());
+        int fila2 = game.matriz.EncontrarJugador(m)[0];
+        int colum2 = game.matriz.EncontrarJugador(m)[1];
+        System.err.println("" + fila2);
+        System.err.println("" + colum2);
+        int [][] m3 = m2;
+        game.AgenteAmplitud(m2);
+        game.matriz.mostrarMundo(m2);
+        
+        //game.matriz.CargarMundo();
+        game.recorridoAmplitud(m3, fila2, colum2, 0, game.listaMovimientosAmplitud.size());
         //System.err.println(inicial);
-        ArrayList<Nodo> cola = new ArrayList<>();
-        Nodo padre = new Nodo(m, null, null, 0);
-        game.bsq.verificarAmplitudV1(cola, padre);
+
         //game.bsq.verificarAmplitud(m, inicial);
-                
         //game.AgenteBuquedaAmplitud(inicial, m, 0);
         //ArrayList<Nodo> data = new ArrayList<>();
         //Nodo n = new Nodo(m, null, null, 0);
