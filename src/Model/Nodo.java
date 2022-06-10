@@ -43,6 +43,17 @@ public class Nodo {
         this.meta = meta;
     }
 
+    public Nodo(int[][] estado, Nodo padre, char meta , String operador, int profundidad, int posFil, int posCol, int costo){
+        this.Estado = estado;
+        this.padre = padre;
+        this.operador = operador;
+        this.profundidad = profundidad;
+        this.posFila = posFil;
+        this.posColum = posCol;
+        this.meta = meta;
+        this.costo = costo;
+    }
+    
     public char getMeta() {
         return meta;
     }
