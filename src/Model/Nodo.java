@@ -23,9 +23,10 @@ public class Nodo {
     char meta;
     int posFila;
     int posColum;
+    int metasEncontradas;
            
 
-    public Nodo(int[][] estado, Nodo padre, char meta ,String operador, int profundidad) {
+    public Nodo(int[][] estado, Nodo padre, char meta , String operador, int profundidad) {
         this.Estado = estado;
         this.padre = padre;
         this.operador = operador;
@@ -33,7 +34,7 @@ public class Nodo {
         this.meta = meta;
     }
 
-    public Nodo(int[][] estado, Nodo padre, char meta , String operador, int profundidad, int posFil, int posCol){
+    public Nodo(int[][] estado, Nodo padre, char meta , int metaEncontrada ,String operador, int profundidad, int posFil, int posCol){
         this.Estado = estado;
         this.padre = padre;
         this.operador = operador;
@@ -41,6 +42,7 @@ public class Nodo {
         this.posFila = posFil;
         this.posColum = posCol;
         this.meta = meta;
+        this.metasEncontradas = metaEncontrada;
     }
 
     public Nodo(int[][] estado, Nodo padre, char meta , String operador, int profundidad, int posFil, int posCol, int costo){
@@ -52,6 +54,14 @@ public class Nodo {
         this.posColum = posCol;
         this.meta = meta;
         this.costo = costo;
+    }
+
+    public int getMetasEncontradas() {
+        return metasEncontradas;
+    }
+
+    public void setMetasEncontradas(int metasEncontradas) {
+        this.metasEncontradas = metasEncontradas;
     }
     
     public char getMeta() {

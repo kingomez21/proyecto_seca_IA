@@ -21,6 +21,7 @@ public class LaberintoIA {
     BusquedaAmplitud bsq;
     BusquedaCosto bsqC;
     ArrayList<Nodo> listaMovimientosAmplitud;
+    ArrayList<Nodo> listaMovimientosAmplitud2;
 
     public LaberintoIA() {
 
@@ -29,7 +30,7 @@ public class LaberintoIA {
         bsq = new BusquedaAmplitud(matriz.getMatriz());
         bsqC = new BusquedaCosto(matriz.getMatriz());
         listaMovimientosAmplitud = new ArrayList<>();
-
+        listaMovimientosAmplitud2 = new ArrayList<>();
     }
 
     public void AgenteBuquedaAmplitud(String verificacion, int[][] estado, int cont) {
@@ -54,30 +55,37 @@ public class LaberintoIA {
     public void AgenteAmplitud(int[][] m) {
         ArrayList<Nodo> cola = new ArrayList<>();
         Nodo padre = new Nodo(m, null, '0', null, 0);
-        Nodo encontrado = null;
+        ArrayList<Nodo> encontrado = new ArrayList<>();
+        int cont = 0;
         bsq.verificarAmplitudV1(cola, padre);
         System.err.println("" + bsq.getNodosExpandidos().size());
+        
         for (int i = 1; i < bsq.getNodosExpandidos().size(); i++) {
             if (bsq.getNodosExpandidos().get(i).getMeta() == '5') {
-                encontrado = bsq.getNodosExpandidos().get(i);
-                /*System.out.print("Operador del padre: " + bsq.getNodosExpandidos().get(i).getPadre().getPadre().getPadre().getOperador()
-                        + " FilPadre: " + bsq.getNodosExpandidos().get(i).getPadre().getPadre().getPadre().getPosFila()
-                        + " ColumPadre: " + bsq.getNodosExpandidos().get(i).getPadre().getPadre().getPadre().getPosColum()
-                        + " Operador: " + bsq.getNodosExpandidos().get(i).getOperador()
-                        + " posF: " + bsq.getNodosExpandidos().get(i).getPosFila()
-                        + " Colum: " + bsq.getNodosExpandidos().get(i).getPosColum() + "\n");
-*/
+                
+                encontrado.add(cont, bsq.getNodosExpandidos().get(i));
+                cont++;
             }
 
         }
-
-        movimientosAmplitud(encontrado);
+        System.out.println("metas encontradas: "+cont);
+        //movimientosAmplitud(encontrado.get(0));
+        movimientosAmplitud(encontrado.get(0));
     }
 
     public void movimientosAmplitud(Nodo meta) {
         if (meta.getOperador() != null) {
             Nodo recorridoNodo = meta;
             listaMovimientosAmplitud.add(meta);
+            movimientosAmplitud(meta.getPadre());
+        }
+
+    }
+    
+    public void movimientosAmplitud2(Nodo meta) {
+        if (meta.getOperador() != null) {
+            Nodo recorridoNodo = meta;
+            listaMovimientosAmplitud2.add(meta);
             movimientosAmplitud(meta.getPadre());
         }
 
@@ -148,14 +156,17 @@ public class LaberintoIA {
         
         
         // Secuencia para resolver la busqueda por amplitud
-        /*
+        
         game.AgenteAmplitud(m);
+        game.matriz.mostrarMundo(m);
+        System.out.println();
         game.matriz.CargarMundo();
         int [][] m2 = game.matriz.getMatriz();
         game.recorridoAmplitud(m2, fila, colum, 0, game.listaMovimientosAmplitud.size());
-        System.err.println("Nodos expandidos"+ game.listaMovimientosAmplitud.size() +" Profundidad: "+game.listaMovimientosAmplitud.get(0).getProfundidad());
-        game.eliminarRecorrido();
         
+        System.err.println("Nodos expandidos: "+ game.bsq.getNodosExpandidos().size() +" Profundidad: "+game.listaMovimientosAmplitud.get(0).getProfundidad());
+        game.eliminarRecorrido();
+        /*
         int fila2 = game.matriz.EncontrarJugador(m)[0];
         int colum2 = game.matriz.EncontrarJugador(m)[1];
         System.err.println("" + fila2);

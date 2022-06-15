@@ -17,7 +17,8 @@ public class BusquedaAmplitud {
 
     Matriz matriz = new Matriz();
     int Estado[][] = new int[10][10];
-    ArrayList<Nodo> nodosExpandidos = new ArrayList<>();;
+    ArrayList<Nodo> nodosExpandidos = new ArrayList<>();
+    ArrayList<Nodo> recorridoMeta1 = new ArrayList<>();
     String Nodo;
     int profundidad;
     String operador;
@@ -37,7 +38,7 @@ public class BusquedaAmplitud {
 
         this.Estado[fila][colum] = 7;
         this.Estado[fila][movColum] = 2;
-        
+
         return this.Estado;
     }
 
@@ -52,7 +53,7 @@ public class BusquedaAmplitud {
 
         this.Estado[fila][colum] = 7;
         this.Estado[movFila][colum] = 2;
-        
+
         return this.Estado;
     }
 
@@ -67,7 +68,7 @@ public class BusquedaAmplitud {
 
         this.Estado[fila][colum] = 7;
         this.Estado[fila][movColum] = 2;
-        
+
         return this.Estado;
     }
 
@@ -88,22 +89,26 @@ public class BusquedaAmplitud {
     public void verificarAmplitudV1(ArrayList<Nodo> cola, Nodo padre) {
 
         int cont = 0;
+        int contMeta = 0;
         cola.add(padre);
         int fila = 0, colum = 0;
         String mov = "";
         char verIzquierda, verArriba, verDerecha, verAbajo;
         char meta = '0';
-
-        while (meta != '5') {
+        // meta != '5'
+        int acum = 1;
+        boolean bandera = false;
+        while (contMeta < 2) {
 
             Nodo nodoExpandido = cola.get(cont);
+            cola.get(cola.size()-1);
             nodosExpandidos.add(nodoExpandido);
             /*System.out.println(""+nodosExpandidos.get(0).getOperador());
             System.err.println("Nodo Expandido: "+nodoExpandido.getOperador());
             
             System.err.println("Nodo Fila: "+nodoExpandido.getPosFila());
             System.err.println("Nodo Colum: "+nodoExpandido.getPosColum());*/
-            
+
             if (nodoExpandido.getOperador() == null) {
                 //System.err.println("Entro a null ");
                 fila = matriz.EncontrarJugador(nodoExpandido.getEstado())[0];
@@ -113,90 +118,94 @@ public class BusquedaAmplitud {
                 fila = nodoExpandido.getPosFila();
                 colum = nodoExpandido.getPosColum();
             }
-            
+
             meta = nodoExpandido.getMeta();
-            //System.out.println("META: "+meta);
-            if(meta == '5'){
-                
-                System.out.print("Encontro una meta");
+            //nodoExpandido.getMetasEncontradas();
+            //System.out.println("META: " + nodoExpandido.getMetasEncontradas());
+            if (meta == '5') {
+
+                //System.out.print("Encontro una meta");
+                contMeta++;
+
             }
             
-            /*System.err.println("Fila: " + fila);
-            System.err.println("Columna: " + colum);*/
-            
+            if(contMeta == 2){
+                acum = contMeta;
+            }
+            /*
+            if (nodoExpandido.getOperador() != null) {
+                if (nodoExpandido.getMetasEncontradas() == 2) {
+                    bandera = true;
+                }
+            }*/
+
+            //System.err.println("Fila: " + fila);
+            //System.err.println("acumulador: " + acum);
             mov = verificar(fila, colum);
 
             verIzquierda = mov.charAt(0);
             verArriba = mov.charAt(1);
             verDerecha = mov.charAt(2);
             verAbajo = mov.charAt(3);
-            
-            /*System.err.println("movimientos: " + mov);
+            /*
+            System.err.println("movimientos: " + mov);
             System.err.println("ver IZ: " + verIzquierda);
             System.err.println("ver ARR: " + verArriba);
             System.err.println("ver DER: " + verDerecha);
             System.err.println("ver ABA: " + verAbajo);*/
-            
+
             if (verIzquierda == '1' || verIzquierda == '5') {
-                
+
                 int movColumIz = colum - 1;
 
                 if (movColumIz >= 0) {
-                    
+
                     if (movColumIz > 9) {
                         movColumIz = colum;
                     }
-                    
-                    cola.add(new Nodo(moverIzquierda(fila, colum), nodoExpandido, verIzquierda ,"IZ", nodoExpandido.getProfundidad()+1, fila, movColumIz));
-                    
+
+                    cola.add(new Nodo(moverIzquierda(fila, colum), nodoExpandido, verIzquierda, acum, "IZ", nodoExpandido.getProfundidad() + 1, fila, movColumIz));
+
                 }
             }
-            
-            if(verArriba == '1' || verArriba == '5'){
+
+            if (verArriba == '1' || verArriba == '5') {
                 int movFilaAr = fila - 1;
 
                 if (movFilaAr >= 0) {
                     if (movFilaAr > 9) {
                         movFilaAr = fila;
                     }
-                    cola.add(new Nodo(moverArriba(fila, colum), nodoExpandido, verArriba,"ARR", nodoExpandido.getProfundidad()+1, movFilaAr, colum));
+                    cola.add(new Nodo(moverArriba(fila, colum), nodoExpandido, verArriba, acum, "ARR", nodoExpandido.getProfundidad() + 1, movFilaAr, colum));
                 }
             }
-            
-            if(verDerecha == '1' || verDerecha == '5'){
+
+            if (verDerecha == '1' || verDerecha == '5') {
                 int movColumDer = colum + 1;
 
                 if (movColumDer >= 0) {
                     if (movColumDer > 9) {
                         movColumDer = colum;
                     }
-                    cola.add(new Nodo(moverDerecha(fila, colum), nodoExpandido, verDerecha ,"DER", nodoExpandido.getProfundidad()+1, fila, movColumDer));
+                    cola.add(new Nodo(moverDerecha(fila, colum), nodoExpandido, verDerecha, acum, "DER", nodoExpandido.getProfundidad() + 1, fila, movColumDer));
                 }
             }
-            
-            if(verAbajo == '1' || verAbajo == '5'){
+
+            if (verAbajo == '1' || verAbajo == '5') {
                 int movFilaAba = fila + 1;
 
                 if (movFilaAba >= 0) {
                     if (movFilaAba > 9) {
                         movFilaAba = fila;
                     }
-                    cola.add(new Nodo(moverAbajo(fila, colum), nodoExpandido, verAbajo ,"ABA", nodoExpandido.getProfundidad()+1, movFilaAba, colum));
+                    cola.add(new Nodo(moverAbajo(fila, colum), nodoExpandido, verAbajo, acum, "ABA", nodoExpandido.getProfundidad() + 1, movFilaAba, colum));
                 }
             }
 
-            //System.err.println("Fila: " + fila);
-            //System.err.println("Columna: " + colum);
-            /*for (int i = 0; i < cola.size(); i++) {
-                System.out.print("padre operador: "+ cola.get(i).getPadre().getOperador()+" Operador : "+cola.get(i).getOperador() + " - ");
-
-            }*/
             System.out.println();
-
+            
             cont++;
         }
-        
-        
 
     }
 
@@ -237,14 +246,15 @@ public class BusquedaAmplitud {
                 movColumIz = colum;
             }
             int izquierda = this.Estado[fila][movColumIz];
-            if(izquierda == 5){
-                movimientos+= "5";
-            }
-            if (izquierda != 1 && izquierda != 7 && izquierda != 5) {
-                movimientos += "1";
-                
+            if (izquierda == 5) {
+                movimientos += "5";
             } else {
-                movimientos += "0";
+                if (izquierda != 1 && izquierda != 7 && izquierda != 5) {
+                    movimientos += "1";
+
+                } else {
+                    movimientos += "0";
+                }
             }
 
         } else {
@@ -258,13 +268,14 @@ public class BusquedaAmplitud {
                 movFilaAr = fila;
             }
             int arriba = this.Estado[movFilaAr][colum];
-            if(arriba == 5){
-                movimientos+= "5";
-            }
-            if (arriba != 1 && arriba != 7 && arriba != 5) {
-                movimientos += "1";
+            if (arriba == 5) {
+                movimientos += "5";
             } else {
-                movimientos += "0";
+                if (arriba != 1 && arriba != 7 && arriba != 5) {
+                    movimientos += "1";
+                } else {
+                    movimientos += "0";
+                }
             }
         } else {
             movimientos += "0";
@@ -278,13 +289,14 @@ public class BusquedaAmplitud {
             }
 
             int derecha = this.Estado[fila][movColumDer];
-            if(derecha == 5){
-                movimientos+= "5";
-            }
-            if (derecha != 1 && derecha != 7 && derecha != 5) {
-                movimientos += "1";
+            if (derecha == 5) {
+                movimientos += "5";
             } else {
-                movimientos += "0";
+                if (derecha != 1 && derecha != 7 && derecha != 5) {
+                    movimientos += "1";
+                } else {
+                    movimientos += "0";
+                }
             }
         } else {
             movimientos += "0";
@@ -298,13 +310,14 @@ public class BusquedaAmplitud {
             }
 
             int abajo = this.Estado[movFilaAba][colum];
-            if(abajo == 5){
-                movimientos+= "5";
-            }
-            if (abajo != 1 && abajo != 7 && abajo != 5) {
-                movimientos += "1";
+            if (abajo == 5) {
+                movimientos += "5";
             } else {
-                movimientos += "0";
+                if (abajo != 1 && abajo != 7 && abajo != 5) {
+                    movimientos += "1";
+                } else {
+                    movimientos += "0";
+                }
             }
         } else {
             movimientos += "0";
