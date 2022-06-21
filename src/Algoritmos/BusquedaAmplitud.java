@@ -19,9 +19,7 @@ public class BusquedaAmplitud {
     int Estado[][] = new int[10][10];
     ArrayList<Nodo> nodosExpandidos = new ArrayList<>();
     ArrayList<Nodo> recorridoMeta1 = new ArrayList<>();
-    String Nodo;
-    int profundidad;
-    String operador;
+    
 
     public BusquedaAmplitud(int[][] estado) {
         this.Estado = estado;
@@ -95,36 +93,25 @@ public class BusquedaAmplitud {
         String mov = "";
         char verIzquierda, verArriba, verDerecha, verAbajo;
         char meta = '0';
-        // meta != '5'
         int acum = 1;
-        boolean bandera = false;
+        
         while (contMeta < 2) {
 
             Nodo nodoExpandido = cola.get(cont);
-            cola.get(cola.size()-1);
+            //cola.get(cola.size()-1);
             nodosExpandidos.add(nodoExpandido);
-            /*System.out.println(""+nodosExpandidos.get(0).getOperador());
-            System.err.println("Nodo Expandido: "+nodoExpandido.getOperador());
-            
-            System.err.println("Nodo Fila: "+nodoExpandido.getPosFila());
-            System.err.println("Nodo Colum: "+nodoExpandido.getPosColum());*/
 
             if (nodoExpandido.getOperador() == null) {
-                //System.err.println("Entro a null ");
                 fila = matriz.EncontrarJugador(nodoExpandido.getEstado())[0];
                 colum = matriz.EncontrarJugador(nodoExpandido.getEstado())[1];
             } else {
-                //System.err.println("No Entro a null ");
                 fila = nodoExpandido.getPosFila();
                 colum = nodoExpandido.getPosColum();
             }
 
             meta = nodoExpandido.getMeta();
-            //nodoExpandido.getMetasEncontradas();
-            //System.out.println("META: " + nodoExpandido.getMetasEncontradas());
+            
             if (meta == '5') {
-
-                //System.out.print("Encontro una meta");
                 contMeta++;
 
             }
@@ -132,27 +119,14 @@ public class BusquedaAmplitud {
             if(contMeta == 2){
                 acum = contMeta;
             }
-            /*
-            if (nodoExpandido.getOperador() != null) {
-                if (nodoExpandido.getMetasEncontradas() == 2) {
-                    bandera = true;
-                }
-            }*/
-
-            //System.err.println("Fila: " + fila);
-            //System.err.println("acumulador: " + acum);
+            
             mov = verificar(fila, colum);
 
             verIzquierda = mov.charAt(0);
             verArriba = mov.charAt(1);
             verDerecha = mov.charAt(2);
             verAbajo = mov.charAt(3);
-            /*
-            System.err.println("movimientos: " + mov);
-            System.err.println("ver IZ: " + verIzquierda);
-            System.err.println("ver ARR: " + verArriba);
-            System.err.println("ver DER: " + verDerecha);
-            System.err.println("ver ABA: " + verAbajo);*/
+            
 
             if (verIzquierda == '1' || verIzquierda == '5') {
 
@@ -325,83 +299,5 @@ public class BusquedaAmplitud {
 
         return movimientos;
     }
-
-    public int[][] mover(String movimientos, int fila, int colum) {
-
-        if (movimientos.equalsIgnoreCase("1010")) {
-            return this.moverDerecha(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("1001")) {
-            return this.moverIzquierda(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("0100")) {
-            return this.moverArriba(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("0010")) {
-            return this.moverDerecha(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("0110")) {
-            return this.moverArriba(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("1000")) {
-            return this.moverIzquierda(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("0001")) {
-            return this.moverAbajo(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("0011")) {
-            return this.moverDerecha(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("0111")) {
-            return this.moverDerecha(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("1100")) {
-            return this.moverIzquierda(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("1110")) {
-            return this.moverIzquierda(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("1101")) {
-            return this.moverIzquierda(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("1011")) {
-            return this.moverDerecha(fila, colum);
-        }
-
-        if (movimientos.equalsIgnoreCase("0101")) {
-            return this.moverAbajo(fila, colum);
-        }
-
-        return this.Estado;
-    }
-
-    //public 
-    public int[][] getEstado() {
-        return this.Estado;
-    }
-
-    public String getNodo() {
-        return this.Nodo;
-    }
-
-    public int getProfundidad() {
-        return this.profundidad;
-    }
-
-    public String getOperador() {
-        return this.operador;
-    }
-
+    
 }

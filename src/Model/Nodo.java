@@ -26,12 +26,13 @@ public class Nodo {
     int metasEncontradas;
            
 
-    public Nodo(int[][] estado, Nodo padre, char meta , String operador, int profundidad) {
+    public Nodo(int[][] estado, Nodo padre, char meta , String operador, int profundidad, int costo) {
         this.Estado = estado;
         this.padre = padre;
         this.operador = operador;
         this.profundidad = profundidad;
         this.meta = meta;
+        this.costo = costo;
     }
 
     public Nodo(int[][] estado, Nodo padre, char meta , int metaEncontrada ,String operador, int profundidad, int posFil, int posCol){
