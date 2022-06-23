@@ -50,7 +50,7 @@ public class LaberintoIA {
         Nodo padre = new Nodo(m, null, '0', null, 0, 0);
         ArrayList<Nodo> encontrado = new ArrayList<>();
         int cont = 0;
-        bsq.verificarAmplitudV1(cola, padre);
+        bsq.verificarAmplitud(cola, padre);
         System.err.println("" + bsq.getNodosExpandidos().size());
         
         for (int i = 1; i < bsq.getNodosExpandidos().size(); i++) {
@@ -61,7 +61,7 @@ public class LaberintoIA {
             }
 
         }
-        System.out.println("metas encontradas: "+cont);
+        //System.out.println("metas encontradas: "+cont);
         //movimientosAmplitud(encontrado.get(0));
         movimientosAmplitud(encontrado.get(0));
     }
@@ -91,8 +91,7 @@ public class LaberintoIA {
                 fila = matriz.EncontrarJugador(matris)[0];
                 colum = matriz.EncontrarJugador(matris)[1];
             }
-            System.err.println("Fila: " + fila);
-            System.err.println("Columna: " + colum);
+            
             int[][] estadoMov = bsq.moverJugador(listaMovimientosAmplitud.get(pos).getOperador(), fila, colum);
             matriz.mostrarMundo(estadoMov);
             System.out.println();
@@ -117,8 +116,6 @@ public class LaberintoIA {
         int cont = 0;
         bsqC.verificacionCostoUniforme(cola, padre);
         
-        //System.err.println("" + bsqC.getNodosExpandidos().size());
-        
         for (int i = 1; i < bsqC.getNodosExpandidos().size(); i++) {
             if (bsqC.getNodosExpandidos().get(i).getMeta() == '5') {
                 
@@ -130,7 +127,7 @@ public class LaberintoIA {
         //System.out.println("metas encontradas: "+cont);
         //movimientosAmplitud(encontrado.get(0));
         //System.out.println("operador: "+encontrado.get(1).getOperador());
-        movimientosCostoUniforme(encontrado.get(1));
+        movimientosCostoUniforme(encontrado.get(0));
     }
     
     public void movimientosCostoUniforme(Nodo meta){
@@ -153,8 +150,6 @@ public class LaberintoIA {
                 fila = matriz.EncontrarJugador(matris)[0];
                 colum = matriz.EncontrarJugador(matris)[1];
             }
-            System.err.println("Fila: " + fila);
-            System.err.println("Columna: " + colum);
             int[][] estadoMov = bsqC.moverJugador(listaMovimientosCostoUniforme.get(pos).getOperador(), fila, colum);
             matriz.mostrarMundo(estadoMov);
             System.out.println();
@@ -175,36 +170,37 @@ public class LaberintoIA {
         
         
         // Secuencia para resolver la busqueda por amplitud
-        /*
+        
         game.AgenteAmplitud(m);
         game.matriz.mostrarMundo(m);
         System.out.println();
         game.matriz.CargarMundo();
         int [][] m2 = game.matriz.getMatriz();
         game.recorridoAmplitud(m2, fila, colum, 0, game.listaMovimientosAmplitud.size());
-        System.err.println("Nodos expandidos: "+ game.bsq.getNodosExpandidos().size() +" Profundidad: "+game.listaMovimientosAmplitud.get(0).getProfundidad());
+        long tiempoFinalAmplitud = System.currentTimeMillis();
+        tiempoFinalAmplitud = (tiempoFinalAmplitud - game.bsq.getTiempoInicial());
+        System.err.println("Nodos expandidos: "+ game.bsq.getNodosExpandidos().size() +
+                " Profundidad: "+game.listaMovimientosAmplitud.get(0).getProfundidad() +
+                " Tiempo: "+tiempoFinalAmplitud+" Milisegundos");
         game.eliminarRecorrido();
-        */
+        
         
         // Secuencia para resolver la busqueda costo uniforme
-        
+        /*
         game.AgenteCostoUniforme(m);
         game.matriz.mostrarMundo(m);
         System.out.println();
         game.matriz.CargarMundo();
-        int [][] m2 = game.matriz.getMatriz();
-        game.recorridoCostoUniforme(m2, fila, colum, 0, game.listaMovimientosCostoUniforme.size());
-        System.err.println("Nodos expandidos: "+ game.bsqC.getNodosExpandidos().size() +" Profundidad: "+game.listaMovimientosCostoUniforme.get(0).getCosto());
-        /*Collections.sort(game.bsqC.getNodosExpandidos(), new Comparator<Nodo> () {
-            @Override
-            public int compare(Nodo o1, Nodo o2) {
-                return new Integer(o2.getCosto()).compareTo(new Integer(o1.getCosto()));
-            }
-        });
-        for (int i = 0; i < game.bsqC.getNodosExpandidos().size(); i++) {
-            System.out.println("DATA: "+game.bsqC.getNodosExpandidos().get(i).getCosto());
-        }*/
-
+        int [][] m3 = game.matriz.getMatriz();
+        game.recorridoCostoUniforme(m3, fila, colum, 0, game.listaMovimientosCostoUniforme.size());
+        long tiempoFinalCosto = System.currentTimeMillis();
+        tiempoFinalCosto = (tiempoFinalCosto - game.bsq.getTiempoInicial());
+        System.err.println("Nodos expandidos: "+ game.bsqC.getNodosExpandidos().size() +
+                " Profundidad: "+game.listaMovimientosCostoUniforme.get(0).getProfundidad()+ 
+                " Costo: "+game.listaMovimientosCostoUniforme.get(0).getCosto() +
+                " Tiempo: "+tiempoFinalCosto+" Milisegundos");
+        
+        */
     }
 
 }

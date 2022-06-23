@@ -19,10 +19,11 @@ public class BusquedaAmplitud {
     int Estado[][] = new int[10][10];
     ArrayList<Nodo> nodosExpandidos = new ArrayList<>();
     ArrayList<Nodo> recorridoMeta1 = new ArrayList<>();
-    
+    long tiempoInicial;
 
     public BusquedaAmplitud(int[][] estado) {
         this.Estado = estado;
+        this.tiempoInicial = System.currentTimeMillis();
     }
 
     public int[][] moverIzquierda(int fila, int colum) {
@@ -84,7 +85,7 @@ public class BusquedaAmplitud {
         return this.Estado;
     }
 
-    public void verificarAmplitudV1(ArrayList<Nodo> cola, Nodo padre) {
+    public void verificarAmplitud(ArrayList<Nodo> cola, Nodo padre) {
 
         int cont = 0;
         int contMeta = 0;
@@ -94,11 +95,10 @@ public class BusquedaAmplitud {
         char verIzquierda, verArriba, verDerecha, verAbajo;
         char meta = '0';
         int acum = 1;
-        
+        long time = 0;
         while (contMeta < 2) {
-
-            Nodo nodoExpandido = cola.get(cont);
-            //cola.get(cola.size()-1);
+            
+            Nodo nodoExpandido = cola.remove(0);
             nodosExpandidos.add(nodoExpandido);
 
             if (nodoExpandido.getOperador() == null) {
@@ -175,10 +175,8 @@ public class BusquedaAmplitud {
                     cola.add(new Nodo(moverAbajo(fila, colum), nodoExpandido, verAbajo, acum, "ABA", nodoExpandido.getProfundidad() + 1, movFilaAba, colum));
                 }
             }
-
-            System.out.println();
             
-            cont++;
+            
         }
 
     }
@@ -223,7 +221,7 @@ public class BusquedaAmplitud {
             if (izquierda == 5) {
                 movimientos += "5";
             } else {
-                if (izquierda != 1 && izquierda != 7 && izquierda != 5) {
+                if (izquierda != 1 && izquierda != 7 && izquierda != 5 && izquierda != 2) {
                     movimientos += "1";
 
                 } else {
@@ -245,7 +243,7 @@ public class BusquedaAmplitud {
             if (arriba == 5) {
                 movimientos += "5";
             } else {
-                if (arriba != 1 && arriba != 7 && arriba != 5) {
+                if (arriba != 1 && arriba != 7 && arriba != 5 && arriba != 2) {
                     movimientos += "1";
                 } else {
                     movimientos += "0";
@@ -266,7 +264,7 @@ public class BusquedaAmplitud {
             if (derecha == 5) {
                 movimientos += "5";
             } else {
-                if (derecha != 1 && derecha != 7 && derecha != 5) {
+                if (derecha != 1 && derecha != 7 && derecha != 5 && derecha != 2) {
                     movimientos += "1";
                 } else {
                     movimientos += "0";
@@ -287,7 +285,7 @@ public class BusquedaAmplitud {
             if (abajo == 5) {
                 movimientos += "5";
             } else {
-                if (abajo != 1 && abajo != 7 && abajo != 5) {
+                if (abajo != 1 && abajo != 7 && abajo != 5 && abajo != 2) {
                     movimientos += "1";
                 } else {
                     movimientos += "0";
@@ -299,5 +297,14 @@ public class BusquedaAmplitud {
 
         return movimientos;
     }
+
+    public long getTiempoInicial() {
+        return tiempoInicial;
+    }
+
+    public void setTiempoInicial(long tiempoInicial) {
+        this.tiempoInicial = tiempoInicial;
+    }
+    
     
 }

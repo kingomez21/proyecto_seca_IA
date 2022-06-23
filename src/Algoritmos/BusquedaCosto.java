@@ -8,7 +8,6 @@ package Algoritmos;
 import Model.Matriz;
 import Model.Nodo;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -21,9 +20,11 @@ public class BusquedaCosto {
     Matriz matriz = new Matriz();
     int[][] Estado = new int[10][10];
     ArrayList<Nodo> nodosExpandidos = new ArrayList<>();
-
+    long tiempoInicial;
+    
     public BusquedaCosto(int[][] estado) {
         this.Estado = estado;
+        this.tiempoInicial = System.currentTimeMillis();
     }
 
     public int[][] moverIzquierda(int fila, int colum) {
@@ -34,8 +35,28 @@ public class BusquedaCosto {
         } else if (movColum > 9) {
             movColum = 9;
         }
-
+        
         this.Estado[fila][colum] = 7;
+        this.Estado[fila][movColum] = 2;
+        return this.Estado;
+    }
+    
+    public int[][] moverIzquierda(int fila, int colum, boolean costo) {
+        int movColum = colum - 1;
+
+        if (movColum < 0) {
+            movColum = 0;
+        } else if (movColum > 9) {
+            movColum = 9;
+        }
+        int iz = this.Estado[fila][colum];
+        //System.out.println("mov-iz: "+iz);
+        if(costo == true){
+            this.Estado[fila][colum] = 8;
+        }else {
+            this.Estado[fila][colum] = 7;
+        }
+        
         this.Estado[fila][movColum] = 2;
         return this.Estado;
     }
@@ -48,8 +69,29 @@ public class BusquedaCosto {
         } else if (movFila > 9) {
             movFila = 9;
         }
-
+        
         this.Estado[fila][colum] = 7;
+        this.Estado[movFila][colum] = 2;
+        return this.Estado;
+    }
+    
+    public int[][] moverArriba(int fila, int colum, boolean costo) {
+        int movFila = fila - 1;
+
+        if (movFila < 0) {
+            movFila = 0;
+        } else if (movFila > 9) {
+            movFila = 9;
+        }
+        
+        int arr = this.Estado[fila][colum];
+        //System.out.println("mov-arr: "+arr);
+        if(costo == true){
+            this.Estado[fila][colum] = 8;
+        }else {
+            this.Estado[fila][colum] = 7;
+        }
+        
         this.Estado[movFila][colum] = 2;
         return this.Estado;
     }
@@ -62,8 +104,30 @@ public class BusquedaCosto {
         } else if (movColum > 9) {
             movColum = 9;
         }
-
+        
+        
         this.Estado[fila][colum] = 7;
+        this.Estado[fila][movColum] = 2;
+        return this.Estado;
+    }
+    
+    public int[][] moverDerecha(int fila, int colum, boolean costo) {
+        int movColum = colum + 1;
+
+        if (movColum < 0) {
+            movColum = 0;
+        } else if (movColum > 9) {
+            movColum = 9;
+        }
+        
+        int dr = this.Estado[fila][colum];
+        //System.out.println("mov-der: "+dr);
+        if(costo == true){
+            this.Estado[fila][colum] = 8;
+        }else {
+            this.Estado[fila][colum] = 7;
+        }
+
         this.Estado[fila][movColum] = 2;
         return this.Estado;
     }
@@ -81,6 +145,27 @@ public class BusquedaCosto {
         this.Estado[movFila][colum] = 2;
         return this.Estado;
     }
+    
+    public int[][] moverAbajo(int fila, int colum, boolean costo) {
+        int movFila = fila + 1;
+
+        if (movFila < 0) {
+            movFila = 0;
+        } else if (movFila > 9) {
+            movFila = 9;
+        }
+
+        int aba = this.Estado[fila][colum];
+        //System.out.println("mov-aba: "+aba);
+        if(costo == true){
+            this.Estado[fila][colum] = 8;
+        }else {
+            this.Estado[fila][colum] = 7;
+        }
+        
+        this.Estado[movFila][colum] = 2;
+        return this.Estado;
+    }
 
     public void verificacionCostoUniforme(ArrayList<Nodo> cola, Nodo padre) {
 
@@ -92,6 +177,7 @@ public class BusquedaCosto {
         int verIzquierda = 0, verArriba = 0, verDerecha = 0, verAbajo = 0;
         char verIzquierdaMeta = '0', verArribaMeta = '0', verDerechaMeta = '0', verAbajoMeta = '0';
         char meta = '0';
+        boolean costoAceite = false;
 
         while (contMeta < 2) {
 
@@ -123,8 +209,8 @@ public class BusquedaCosto {
             verArriba = mov[1];
             verDerecha = mov[2];
             verAbajo = mov[3];
-            /*
-            System.err.println("IZ: " + verIzquierda);
+            
+            /*System.err.println("IZ: " + verIzquierda);
             System.err.println("ARR: " + verArriba);
             System.err.println("DER: " + verDerecha);
             System.err.println("ABA: " + verAbajo);*/
@@ -135,6 +221,11 @@ public class BusquedaCosto {
                     verIzquierdaMeta = '5';
                     //System.out.println("Meta IZ: " + verIzquierdaMeta);
                 }
+                
+                if(verIzquierda == 4){
+                    costoAceite = true;
+                }
+                
                 int movColumIz = colum - 1;
 
                 if (movColumIz >= 0) {
@@ -145,6 +236,7 @@ public class BusquedaCosto {
 
                     cola.add(new Nodo(moverIzquierda(fila, colum), nodoExpandido, verIzquierdaMeta, "IZ", nodoExpandido.getProfundidad() + 1, fila, movColumIz, nodoExpandido.getCosto() + verIzquierda));
                     verIzquierdaMeta = '0';
+                    costoAceite = false;
                 }
             }
 
@@ -155,6 +247,10 @@ public class BusquedaCosto {
                     //System.out.println("Meta ARR: " + verArribaMeta);
                 }
 
+                if(verArriba == 4){
+                    costoAceite = true;
+                }
+                
                 int movFilaAr = fila - 1;
 
                 if (movFilaAr >= 0) {
@@ -163,6 +259,7 @@ public class BusquedaCosto {
                     }
                     cola.add(new Nodo(moverArriba(fila, colum), nodoExpandido, verArribaMeta, "ARR", nodoExpandido.getProfundidad() + 1, movFilaAr, colum, nodoExpandido.getCosto() + verArriba));
                     verArribaMeta = '0';
+                    costoAceite = false;
                 }
             }
 
@@ -173,6 +270,10 @@ public class BusquedaCosto {
                     //System.out.println("Meta DER: " + verDerechaMeta);
                 }
 
+                if(verDerecha == 4){
+                    costoAceite = true;
+                }
+                
                 int movColumDer = colum + 1;
 
                 if (movColumDer >= 0) {
@@ -181,6 +282,7 @@ public class BusquedaCosto {
                     }
                     cola.add(new Nodo(moverDerecha(fila, colum), nodoExpandido, verDerechaMeta, "DER", nodoExpandido.getProfundidad() + 1, fila, movColumDer, nodoExpandido.getCosto() + verDerecha));
                     verDerechaMeta = '0';
+                    costoAceite = false;
                 }
             }
 
@@ -191,6 +293,10 @@ public class BusquedaCosto {
                     //System.out.println("Meta ABA: " + verAbajoMeta);
                 }
 
+                if(verAbajo == 4){
+                    costoAceite = true;
+                }
+                
                 int movFilaAba = fila + 1;
 
                 if (movFilaAba >= 0) {
@@ -199,6 +305,7 @@ public class BusquedaCosto {
                     }
                     cola.add(new Nodo(moverAbajo(fila, colum), nodoExpandido, verAbajoMeta, "ABA", nodoExpandido.getProfundidad() + 1, movFilaAba, colum, nodoExpandido.getCosto() + verAbajo));
                     verAbajoMeta = '0';
+                    costoAceite = false;
                 }
             }
 
@@ -230,8 +337,8 @@ public class BusquedaCosto {
             if (izquierda == 5) {
                 iz = 0;
             } else {
-                if (izquierda != 1 && izquierda != 7 && izquierda != 5) {
-                    if (izquierda == 6) {
+                if (izquierda != 1 && izquierda != 7 && izquierda != 5 && izquierda != 2) {
+                    if (izquierda == 6 || izquierda == 8) {
                         iz = 4;
                     } else {
                         iz = 1;
@@ -257,8 +364,8 @@ public class BusquedaCosto {
             if (arriba == 5) {
                 arr = 0;
             } else {
-                if (arriba != 1 && arriba != 7 && arriba != 5) {
-                    if (arriba == 6) {
+                if (arriba != 1 && arriba != 7 && arriba != 5 && arriba != 2) {
+                    if (arriba == 6 || arriba == 8) {
                         arr = 4;
                     } else {
                         arr = 1;
@@ -286,8 +393,8 @@ public class BusquedaCosto {
                 der = 0;
             } else {
 
-                if (derecha != 1 && derecha != 7 && derecha != 5) {
-                    if (derecha == 6) {
+                if (derecha != 1 && derecha != 7 && derecha != 5 && derecha != 2) {
+                    if (derecha == 6 || derecha == 8) {
                         der = 4;
                     } else {
                         der = 1;
@@ -313,8 +420,8 @@ public class BusquedaCosto {
             if (abajo == 5) {
                 aba = 0;
             } else {
-                if (abajo != 1 && abajo != 7 && abajo != 5) {
-                    if (abajo == 6) {
+                if (abajo != 1 && abajo != 7 && abajo != 5 && abajo != 2) {
+                    if (abajo == 6 || abajo == 8) {
                         aba = 4;
                     } else {
                         aba = 1;
