@@ -21,7 +21,7 @@ public class BusquedaCosto {
     int[][] Estado = new int[10][10];
     ArrayList<Nodo> nodosExpandidos = new ArrayList<>();
     long tiempoInicial;
-    
+
     public BusquedaCosto(int[][] estado) {
         this.Estado = estado;
         this.tiempoInicial = System.currentTimeMillis();
@@ -35,28 +35,8 @@ public class BusquedaCosto {
         } else if (movColum > 9) {
             movColum = 9;
         }
-        
-        this.Estado[fila][colum] = 7;
-        this.Estado[fila][movColum] = 2;
-        return this.Estado;
-    }
-    
-    public int[][] moverIzquierda(int fila, int colum, boolean costo) {
-        int movColum = colum - 1;
 
-        if (movColum < 0) {
-            movColum = 0;
-        } else if (movColum > 9) {
-            movColum = 9;
-        }
-        int iz = this.Estado[fila][colum];
-        //System.out.println("mov-iz: "+iz);
-        if(costo == true){
-            this.Estado[fila][colum] = 8;
-        }else {
-            this.Estado[fila][colum] = 7;
-        }
-        
+        this.Estado[fila][colum] = 7;
         this.Estado[fila][movColum] = 2;
         return this.Estado;
     }
@@ -69,29 +49,8 @@ public class BusquedaCosto {
         } else if (movFila > 9) {
             movFila = 9;
         }
-        
-        this.Estado[fila][colum] = 7;
-        this.Estado[movFila][colum] = 2;
-        return this.Estado;
-    }
-    
-    public int[][] moverArriba(int fila, int colum, boolean costo) {
-        int movFila = fila - 1;
 
-        if (movFila < 0) {
-            movFila = 0;
-        } else if (movFila > 9) {
-            movFila = 9;
-        }
-        
-        int arr = this.Estado[fila][colum];
-        //System.out.println("mov-arr: "+arr);
-        if(costo == true){
-            this.Estado[fila][colum] = 8;
-        }else {
-            this.Estado[fila][colum] = 7;
-        }
-        
+        this.Estado[fila][colum] = 7;
         this.Estado[movFila][colum] = 2;
         return this.Estado;
     }
@@ -104,30 +63,8 @@ public class BusquedaCosto {
         } else if (movColum > 9) {
             movColum = 9;
         }
-        
-        
+
         this.Estado[fila][colum] = 7;
-        this.Estado[fila][movColum] = 2;
-        return this.Estado;
-    }
-    
-    public int[][] moverDerecha(int fila, int colum, boolean costo) {
-        int movColum = colum + 1;
-
-        if (movColum < 0) {
-            movColum = 0;
-        } else if (movColum > 9) {
-            movColum = 9;
-        }
-        
-        int dr = this.Estado[fila][colum];
-        //System.out.println("mov-der: "+dr);
-        if(costo == true){
-            this.Estado[fila][colum] = 8;
-        }else {
-            this.Estado[fila][colum] = 7;
-        }
-
         this.Estado[fila][movColum] = 2;
         return this.Estado;
     }
@@ -145,27 +82,6 @@ public class BusquedaCosto {
         this.Estado[movFila][colum] = 2;
         return this.Estado;
     }
-    
-    public int[][] moverAbajo(int fila, int colum, boolean costo) {
-        int movFila = fila + 1;
-
-        if (movFila < 0) {
-            movFila = 0;
-        } else if (movFila > 9) {
-            movFila = 9;
-        }
-
-        int aba = this.Estado[fila][colum];
-        //System.out.println("mov-aba: "+aba);
-        if(costo == true){
-            this.Estado[fila][colum] = 8;
-        }else {
-            this.Estado[fila][colum] = 7;
-        }
-        
-        this.Estado[movFila][colum] = 2;
-        return this.Estado;
-    }
 
     public void verificacionCostoUniforme(ArrayList<Nodo> cola, Nodo padre) {
 
@@ -179,143 +95,142 @@ public class BusquedaCosto {
         char meta = '0';
         boolean costoAceite = false;
 
-        while (contMeta < 2) {
+        try {
 
-            /*if(cola.size() == 1){
+            while (contMeta < 2) {
+
                 Nodo nodoExpandido = cola.remove(0);
                 nodosExpandidos.add(nodoExpandido);
-            }
-            ordenarMenorAMayor(cola).remove(0);*/
-            Nodo nodoExpandido = cola.remove(0);
-            nodosExpandidos.add(nodoExpandido);
 
-            if (nodoExpandido.getOperador() == null) {
-                fila = matriz.EncontrarJugador(nodoExpandido.getEstado())[0];
-                colum = matriz.EncontrarJugador(nodoExpandido.getEstado())[1];
-            } else {
-                fila = nodoExpandido.getPosFila();
-                colum = nodoExpandido.getPosColum();
-            }
+                if (nodoExpandido.getOperador() == null) {
+                    fila = matriz.EncontrarJugador(nodoExpandido.getEstado())[0];
+                    colum = matriz.EncontrarJugador(nodoExpandido.getEstado())[1];
+                } else {
+                    fila = nodoExpandido.getPosFila();
+                    colum = nodoExpandido.getPosColum();
+                }
 
-            meta = nodoExpandido.getMeta();
-            //System.out.println("metas: " + meta);
-            if (meta == '5') {
-                contMeta++;
-            }
+                meta = nodoExpandido.getMeta();
 
-            mov = verficarCostoCaminos(fila, colum);
-            //System.err.println("movimientos: " + mov.length);
-            verIzquierda = mov[0];
-            verArriba = mov[1];
-            verDerecha = mov[2];
-            verAbajo = mov[3];
-            
-            /*System.err.println("IZ: " + verIzquierda);
+                if (meta == '5') {
+                    contMeta++;
+                }
+
+                mov = verficarCostoCaminos(fila, colum);
+                //System.err.println("movimientos: " + mov.length);
+                verIzquierda = mov[0];
+                verArriba = mov[1];
+                verDerecha = mov[2];
+                verAbajo = mov[3];
+
+                /*System.err.println("IZ: " + verIzquierda);
             System.err.println("ARR: " + verArriba);
             System.err.println("DER: " + verDerecha);
             System.err.println("ABA: " + verAbajo);*/
+                if (verIzquierda != 1000) {
 
-            if (verIzquierda != 1000) {
-
-                if (verIzquierda == 0) {
-                    verIzquierdaMeta = '5';
-                    //System.out.println("Meta IZ: " + verIzquierdaMeta);
-                }
-                
-                if(verIzquierda == 4){
-                    costoAceite = true;
-                }
-                
-                int movColumIz = colum - 1;
-
-                if (movColumIz >= 0) {
-
-                    if (movColumIz > 9) {
-                        movColumIz = colum;
+                    if (verIzquierda == 0) {
+                        verIzquierdaMeta = '5';
+                        //System.out.println("Meta IZ: " + verIzquierdaMeta);
                     }
 
-                    cola.add(new Nodo(moverIzquierda(fila, colum), nodoExpandido, verIzquierdaMeta, "IZ", nodoExpandido.getProfundidad() + 1, fila, movColumIz, nodoExpandido.getCosto() + verIzquierda));
-                    verIzquierdaMeta = '0';
-                    costoAceite = false;
-                }
-            }
-
-            if (verArriba != 1000) {
-
-                if (verArriba == 0) {
-                    verArribaMeta = '5';
-                    //System.out.println("Meta ARR: " + verArribaMeta);
-                }
-
-                if(verArriba == 4){
-                    costoAceite = true;
-                }
-                
-                int movFilaAr = fila - 1;
-
-                if (movFilaAr >= 0) {
-                    if (movFilaAr > 9) {
-                        movFilaAr = fila;
+                    if (verIzquierda == 4) {
+                        costoAceite = true;
                     }
-                    cola.add(new Nodo(moverArriba(fila, colum), nodoExpandido, verArribaMeta, "ARR", nodoExpandido.getProfundidad() + 1, movFilaAr, colum, nodoExpandido.getCosto() + verArriba));
-                    verArribaMeta = '0';
-                    costoAceite = false;
-                }
-            }
 
-            if (verDerecha != 1000) {
+                    int movColumIz = colum - 1;
 
-                if (verDerecha == 0) {
-                    verDerechaMeta = '5';
-                    //System.out.println("Meta DER: " + verDerechaMeta);
-                }
+                    if (movColumIz >= 0) {
 
-                if(verDerecha == 4){
-                    costoAceite = true;
-                }
-                
-                int movColumDer = colum + 1;
+                        if (movColumIz > 9) {
+                            movColumIz = colum;
+                        }
 
-                if (movColumDer >= 0) {
-                    if (movColumDer > 9) {
-                        movColumDer = colum;
+                        cola.add(new Nodo(moverIzquierda(fila, colum), nodoExpandido, verIzquierdaMeta, "IZ", nodoExpandido.getProfundidad() + 1, fila, movColumIz, nodoExpandido.getCosto() + verIzquierda));
+                        verIzquierdaMeta = '0';
+                        costoAceite = false;
                     }
-                    cola.add(new Nodo(moverDerecha(fila, colum), nodoExpandido, verDerechaMeta, "DER", nodoExpandido.getProfundidad() + 1, fila, movColumDer, nodoExpandido.getCosto() + verDerecha));
-                    verDerechaMeta = '0';
-                    costoAceite = false;
-                }
-            }
-
-            if (verAbajo != 1000) {
-
-                if (verAbajo == 0) {
-                    verAbajoMeta = '5';
-                    //System.out.println("Meta ABA: " + verAbajoMeta);
                 }
 
-                if(verAbajo == 4){
-                    costoAceite = true;
-                }
-                
-                int movFilaAba = fila + 1;
+                if (verArriba != 1000) {
 
-                if (movFilaAba >= 0) {
-                    if (movFilaAba > 9) {
-                        movFilaAba = fila;
+                    if (verArriba == 0) {
+                        verArribaMeta = '5';
+                        //System.out.println("Meta ARR: " + verArribaMeta);
                     }
-                    cola.add(new Nodo(moverAbajo(fila, colum), nodoExpandido, verAbajoMeta, "ABA", nodoExpandido.getProfundidad() + 1, movFilaAba, colum, nodoExpandido.getCosto() + verAbajo));
-                    verAbajoMeta = '0';
-                    costoAceite = false;
-                }
-            }
 
-            Collections.sort(cola, new Comparator<Nodo>() {
-                @Override
-                public int compare(Nodo o1, Nodo o2) {
-                    return new Integer(o1.getCosto()).compareTo(new Integer(o2.getCosto()));
+                    if (verArriba == 4) {
+                        costoAceite = true;
+                    }
+
+                    int movFilaAr = fila - 1;
+
+                    if (movFilaAr >= 0) {
+                        if (movFilaAr > 9) {
+                            movFilaAr = fila;
+                        }
+                        cola.add(new Nodo(moverArriba(fila, colum), nodoExpandido, verArribaMeta, "ARR", nodoExpandido.getProfundidad() + 1, movFilaAr, colum, nodoExpandido.getCosto() + verArriba));
+                        verArribaMeta = '0';
+                        costoAceite = false;
+                    }
                 }
-            });
-            //cont++;
+
+                if (verDerecha != 1000) {
+
+                    if (verDerecha == 0) {
+                        verDerechaMeta = '5';
+                        //System.out.println("Meta DER: " + verDerechaMeta);
+                    }
+
+                    if (verDerecha == 4) {
+                        costoAceite = true;
+                    }
+
+                    int movColumDer = colum + 1;
+
+                    if (movColumDer >= 0) {
+                        if (movColumDer > 9) {
+                            movColumDer = colum;
+                        }
+                        cola.add(new Nodo(moverDerecha(fila, colum), nodoExpandido, verDerechaMeta, "DER", nodoExpandido.getProfundidad() + 1, fila, movColumDer, nodoExpandido.getCosto() + verDerecha));
+                        verDerechaMeta = '0';
+                        costoAceite = false;
+                    }
+                }
+
+                if (verAbajo != 1000) {
+
+                    if (verAbajo == 0) {
+                        verAbajoMeta = '5';
+                        //System.out.println("Meta ABA: " + verAbajoMeta);
+                    }
+
+                    if (verAbajo == 4) {
+                        costoAceite = true;
+                    }
+
+                    int movFilaAba = fila + 1;
+
+                    if (movFilaAba >= 0) {
+                        if (movFilaAba > 9) {
+                            movFilaAba = fila;
+                        }
+                        cola.add(new Nodo(moverAbajo(fila, colum), nodoExpandido, verAbajoMeta, "ABA", nodoExpandido.getProfundidad() + 1, movFilaAba, colum, nodoExpandido.getCosto() + verAbajo));
+                        verAbajoMeta = '0';
+                        costoAceite = false;
+                    }
+                }
+
+                Collections.sort(cola, new Comparator<Nodo>() {
+                    @Override
+                    public int compare(Nodo o1, Nodo o2) {
+                        return new Integer(o1.getCosto()).compareTo(new Integer(o2.getCosto()));
+                    }
+                });
+                //cont++;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Mensaje: " + e.getMessage());
         }
     }
 

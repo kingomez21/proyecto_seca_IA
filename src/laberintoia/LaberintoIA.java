@@ -7,6 +7,7 @@ package laberintoia;
 
 import Algoritmos.BusquedaAmplitud;
 import Algoritmos.BusquedaCosto;
+import Algoritmos.BusquedaProfundidad;
 import Model.Matriz;
 import Model.Nodo;
 import java.util.ArrayList;
@@ -23,12 +24,14 @@ public class LaberintoIA {
     Matriz matriz;
     BusquedaAmplitud bsq;
     BusquedaCosto bsqC;
+    BusquedaProfundidad bsqP;
     ArrayList<Nodo> listaMovimientosAmplitud;
     ArrayList<Nodo> listaMovimientosAmplitud2;
     
     ArrayList<Nodo> listaMovimientosCostoUniforme;
     ArrayList<Nodo> listaMovimientosCostoUniforme2;
     
+    ArrayList<Nodo> listaMovimientosProfundidad;
 
     public LaberintoIA() {
 
@@ -36,12 +39,15 @@ public class LaberintoIA {
         matriz.CargarMundo();
         bsq = new BusquedaAmplitud(matriz.getMatriz());
         bsqC = new BusquedaCosto(matriz.getMatriz());
+        bsqP = new BusquedaProfundidad(matriz.getMatriz());
         
         listaMovimientosAmplitud = new ArrayList<>();
         listaMovimientosAmplitud2 = new ArrayList<>();
         
         listaMovimientosCostoUniforme = new ArrayList<>();
         listaMovimientosCostoUniforme2 =  new ArrayList<>();
+        
+        listaMovimientosProfundidad = new ArrayList<>();
     }
 
     
@@ -159,6 +165,76 @@ public class LaberintoIA {
         }
     }
     
+    public void eliminarRecorridoCosto(){
+        for (int i = 0; i < listaMovimientosCostoUniforme.size(); i++) {
+           listaMovimientosCostoUniforme.removeAll(listaMovimientosCostoUniforme);
+        }
+    }
+    
+    
+    public void AgenteProfundidad(int[][] m) {
+        ArrayList<Nodo> pila = new ArrayList<>();
+        Nodo padre = new Nodo(m, null, '0', null, 0, 0);
+        ArrayList<Nodo> encontrado = new ArrayList<>();
+        int cont = 0;
+        bsqP.verficarProfundidad(pila, padre);
+        //System.err.println("" + bsqP.getNodosExpandidos().size());
+        
+        for (int i = 1; i < bsqP.getNodosExpandidos().size(); i++) {
+            if (bsqP.getNodosExpandidos().get(i).getMeta() == '5') {
+                
+                encontrado.add(cont, bsqP.getNodosExpandidos().get(i));
+                cont++;
+            }
+
+        }
+        //System.out.println("metas encontradas: "+cont);
+        //movimientosAmplitud(encontrado.get(0));
+        movimientosProfundidad(encontrado.get(1));
+    }
+
+    public void movimientosProfundidad(Nodo meta) {
+        if (meta.getOperador() != null) {
+            listaMovimientosProfundidad.add(meta);
+            movimientosProfundidad(meta.getPadre());
+        }
+
+    }
+    
+   
+
+    public void recorridoProfundidad(int matris[][], int fl, int col, int contador, int pos) {
+
+        
+        int fila = 0, colum = 0;
+
+        if (contador < listaMovimientosProfundidad.size()) {
+            pos--;
+            
+            if (contador == 0) {
+                fila = fl;
+                colum = col;
+            } else {
+                fila = matriz.EncontrarJugador(matris)[0];
+                colum = matriz.EncontrarJugador(matris)[1];
+            }
+            
+            int[][] estadoMov = bsqP.moverJugador(listaMovimientosProfundidad.get(pos).getOperador(), fila, colum);
+            matriz.mostrarMundo(estadoMov);
+            System.out.println();
+            contador++;
+            
+            recorridoProfundidad(estadoMov, fila, colum, contador, pos);
+        }
+
+    }
+    
+    public void eliminarRecorridoProfundidad(){
+        for (int i = 0; i < listaMovimientosProfundidad.size(); i++) {
+           listaMovimientosProfundidad.removeAll(listaMovimientosProfundidad);
+        }
+    }
+    
     
     public static void main(String[] args) {
 
@@ -170,7 +246,7 @@ public class LaberintoIA {
         
         
         // Secuencia para resolver la busqueda por amplitud
-        
+        /*
         game.AgenteAmplitud(m);
         game.matriz.mostrarMundo(m);
         System.out.println();
@@ -183,7 +259,7 @@ public class LaberintoIA {
                 " Profundidad: "+game.listaMovimientosAmplitud.get(0).getProfundidad() +
                 " Tiempo: "+tiempoFinalAmplitud+" Milisegundos");
         game.eliminarRecorrido();
-        
+        */
         
         // Secuencia para resolver la busqueda costo uniforme
         /*
@@ -200,7 +276,20 @@ public class LaberintoIA {
                 " Costo: "+game.listaMovimientosCostoUniforme.get(0).getCosto() +
                 " Tiempo: "+tiempoFinalCosto+" Milisegundos");
         
-        */
+        game.eliminarRecorridoCosto();*/
+        
+        game.AgenteProfundidad(m);
+        game.matriz.mostrarMundo(m);
+        System.out.println();
+        game.matriz.CargarMundo();
+        int [][] m2 = game.matriz.getMatriz();
+        game.recorridoProfundidad(m2, fila, colum, 0, game.listaMovimientosProfundidad.size());
+        long tiempoFinalAmplitud = System.currentTimeMillis();
+        tiempoFinalAmplitud = (tiempoFinalAmplitud - game.bsqP.getTiempoInicial());
+        System.err.println("Nodos expandidos: "+ game.bsqP.getNodosExpandidos().size() +
+                " Profundidad: "+game.listaMovimientosProfundidad.get(0).getProfundidad() +
+                " Tiempo: "+tiempoFinalAmplitud+" Milisegundos");
+        game.eliminarRecorridoProfundidad();
     }
 
 }
