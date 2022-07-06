@@ -13,19 +13,18 @@ import java.util.ArrayList;
  *
  * @author USUARIO
  */
-public class BusquedaAmplitud {
-
+public class BusquedaProfundidad {
+ 
     Matriz matriz = new Matriz();
-    int Estado[][] = new int[10][10];
+    int [][] Estado = new int[10][10];
     ArrayList<Nodo> nodosExpandidos = new ArrayList<>();
-    ArrayList<Nodo> recorridoMeta1 = new ArrayList<>();
     long tiempoInicial;
-
-    public BusquedaAmplitud(int[][] estado) {
-        this.Estado = estado;
+    
+    public BusquedaProfundidad(int [][] estado) {
+         this.Estado = estado;
         this.tiempoInicial = System.currentTimeMillis();
     }
-
+    
     public int[][] moverIzquierda(int fila, int colum) {
         int movColum = colum - 1;
 
@@ -84,12 +83,12 @@ public class BusquedaAmplitud {
         this.Estado[movFila][colum] = 2;
         return this.Estado;
     }
-
-    public void verificarAmplitud(ArrayList<Nodo> cola, Nodo padre) {
-
+    
+    public void verficarProfundidad(ArrayList<Nodo> pila, Nodo padre){
+        
         int cont = 0;
         int contMeta = 0;
-        cola.add(padre);
+        pila.add(padre);
         int fila = 0, colum = 0;
         String mov = "";
         char verIzquierda, verArriba, verDerecha, verAbajo;
@@ -101,7 +100,7 @@ public class BusquedaAmplitud {
 
             while (contMeta < 2) {
 
-                Nodo nodoExpandido = cola.remove(0);
+                Nodo nodoExpandido = pila.remove(pila.size()-1);
                 nodosExpandidos.add(nodoExpandido);
 
                 if (nodoExpandido.getOperador() == null) {
@@ -119,9 +118,7 @@ public class BusquedaAmplitud {
 
                 }
 
-                if (contMeta == 2) {
-                    acum = contMeta;
-                }
+                
 
                 mov = verificar(fila, colum);
 
@@ -140,7 +137,7 @@ public class BusquedaAmplitud {
                             movColumIz = colum;
                         }
 
-                        cola.add(new Nodo(moverIzquierda(fila, colum), nodoExpandido, verIzquierda, acum, "IZ", nodoExpandido.getProfundidad() + 1, fila, movColumIz));
+                        pila.add(new Nodo(moverIzquierda(fila, colum), nodoExpandido, verIzquierda, acum, "IZ", nodoExpandido.getProfundidad() + 1, fila, movColumIz));
 
                     }
                 }
@@ -152,7 +149,7 @@ public class BusquedaAmplitud {
                         if (movFilaAr > 9) {
                             movFilaAr = fila;
                         }
-                        cola.add(new Nodo(moverArriba(fila, colum), nodoExpandido, verArriba, acum, "ARR", nodoExpandido.getProfundidad() + 1, movFilaAr, colum));
+                        pila.add(new Nodo(moverArriba(fila, colum), nodoExpandido, verArriba, acum, "ARR", nodoExpandido.getProfundidad() + 1, movFilaAr, colum));
                     }
                 }
 
@@ -163,7 +160,7 @@ public class BusquedaAmplitud {
                         if (movColumDer > 9) {
                             movColumDer = colum;
                         }
-                        cola.add(new Nodo(moverDerecha(fila, colum), nodoExpandido, verDerecha, acum, "DER", nodoExpandido.getProfundidad() + 1, fila, movColumDer));
+                        pila.add(new Nodo(moverDerecha(fila, colum), nodoExpandido, verDerecha, acum, "DER", nodoExpandido.getProfundidad() + 1, fila, movColumDer));
                     }
                 }
 
@@ -174,7 +171,7 @@ public class BusquedaAmplitud {
                         if (movFilaAba > 9) {
                             movFilaAba = fila;
                         }
-                        cola.add(new Nodo(moverAbajo(fila, colum), nodoExpandido, verAbajo, acum, "ABA", nodoExpandido.getProfundidad() + 1, movFilaAba, colum));
+                        pila.add(new Nodo(moverAbajo(fila, colum), nodoExpandido, verAbajo, acum, "ABA", nodoExpandido.getProfundidad() + 1, movFilaAba, colum));
                     }
                 }
 
@@ -182,17 +179,9 @@ public class BusquedaAmplitud {
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Mensaje: " + e.getMessage());
         }
-
+        
     }
-
-    public ArrayList<Nodo> getNodosExpandidos() {
-        return nodosExpandidos;
-    }
-
-    public void setNodosExpandidos(ArrayList<Nodo> nodosExpandidos) {
-        this.nodosExpandidos = nodosExpandidos;
-    }
-
+    
     public int[][] moverJugador(String mov, int fila, int colum) {
 
         if (mov.equalsIgnoreCase("IZ")) {
@@ -302,6 +291,14 @@ public class BusquedaAmplitud {
         return movimientos;
     }
 
+    public ArrayList<Nodo> getNodosExpandidos() {
+        return nodosExpandidos;
+    }
+
+    public void setNodosExpandidos(ArrayList<Nodo> nodosExpandidos) {
+        this.nodosExpandidos = nodosExpandidos;
+    }
+
     public long getTiempoInicial() {
         return tiempoInicial;
     }
@@ -309,5 +306,6 @@ public class BusquedaAmplitud {
     public void setTiempoInicial(long tiempoInicial) {
         this.tiempoInicial = tiempoInicial;
     }
-
+    
+    
 }

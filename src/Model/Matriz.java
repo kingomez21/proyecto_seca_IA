@@ -82,6 +82,24 @@ public class Matriz {
         }
         return jugador;
     }
+    
+    public int[] EncontrarJugadorMov(int[][] m, int mov) {
+        int[] jugador = new int[2];
+        int fila = 0;
+        while (fila < 10) {
+            for (int i = 0; i < 10; i++) {
+
+                if (m[fila][i] == mov) {
+                    jugador[0] = fila;
+                    jugador[1] = i;
+                }
+
+            }
+
+            fila++;
+        }
+        return jugador;
+    }
 
     public void mostrarMundo(int mundo[][]) {
         int fila = 0;
