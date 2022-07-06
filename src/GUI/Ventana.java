@@ -14,12 +14,14 @@ public class Ventana extends javax.swing.JFrame {
     Casilla casilla = new Casilla();
     Timer reloj;
     int[][] laberinto;
+    int i=2;
+    int j=2;
             
     public Ventana() {
         initComponents();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        reloj = new Timer(3000, tiempo);
+        reloj = new Timer(1000, tiempo);
         reloj.start();
         laberinto = gs.abrirArchivo();
         tb.dibujarTablero(laberinto, PanelTablero);  
@@ -29,14 +31,15 @@ public class Ventana extends javax.swing.JFrame {
         @Override
         
         public void actionPerformed(ActionEvent ae) {
-            //int [][] laberinto = gs.abrirArchivo();
-            
-            for(int i=2; i<7; i++){
-                int j=2;
-                laberinto[j][i] = 2;
-                laberinto[j][i-1] = 0;
+            laberinto[i][j] = 2;
+            laberinto[i][j-1] = 0;
+            tb.dibujarTablero(laberinto, PanelTablero);
+            if(j==9){
+                laberinto[i][j] = 0;
                 tb.dibujarTablero(laberinto, PanelTablero);
+                j=2;
             }
+            j++;
         }
     };
 

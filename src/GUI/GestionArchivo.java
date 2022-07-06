@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class GestionArchivo {
-    
+        
     public GestionArchivo() {
 
     }
@@ -35,7 +35,7 @@ public class GestionArchivo {
                for(int m=0; m<10; m++){
                    System.out.print(laberinto[n][m] + " ");
                }
-               System.out.println("");
+               System.out.println(""); 
            }
 
        }
