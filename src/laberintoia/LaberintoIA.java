@@ -21,17 +21,17 @@ import java.util.Timer;
  */
 public class LaberintoIA {
 
-    Matriz matriz;
-    BusquedaAmplitud bsq;
-    BusquedaCosto bsqC;
-    BusquedaProfundidad bsqP;
-    ArrayList<Nodo> listaMovimientosAmplitud;
-    ArrayList<Nodo> listaMovimientosAmplitud2;
+    public Matriz matriz;
+    public BusquedaAmplitud bsq;
+    public BusquedaCosto bsqC;
+    public BusquedaProfundidad bsqP;
+    public ArrayList<Nodo> listaMovimientosAmplitud;
+    public ArrayList<Nodo> listaMovimientosAmplitud2;
     
-    ArrayList<Nodo> listaMovimientosCostoUniforme;
-    ArrayList<Nodo> listaMovimientosCostoUniforme2;
+    public ArrayList<Nodo> listaMovimientosCostoUniforme;
+    public ArrayList<Nodo> listaMovimientosCostoUniforme2;
     
-    ArrayList<Nodo> listaMovimientosProfundidad;
+    public ArrayList<Nodo> listaMovimientosProfundidad;
 
     public LaberintoIA() {
 
@@ -69,7 +69,7 @@ public class LaberintoIA {
         }
         //System.out.println("metas encontradas: "+cont);
         //movimientosAmplitud(encontrado.get(0));
-        movimientosAmplitud(encontrado.get(0));
+        movimientosAmplitud(encontrado.get(1));
     }
 
     public void movimientosAmplitud(Nodo meta) {
@@ -236,13 +236,13 @@ public class LaberintoIA {
     }
     
     
-    public static void main(String[] args) {
-
+    //public static void main(String[] args) {
+        /*
         LaberintoIA game = new LaberintoIA();
         int[][] m = game.matriz.getMatriz();
         int fila = game.matriz.EncontrarJugador(m)[0];
         int colum = game.matriz.EncontrarJugador(m)[1];
-        
+        */
         
         
         // Secuencia para resolver la busqueda por amplitud
@@ -278,6 +278,8 @@ public class LaberintoIA {
         
         game.eliminarRecorridoCosto();*/
         
+    // secuencia para resolver profundidad
+    /*
         game.AgenteProfundidad(m);
         game.matriz.mostrarMundo(m);
         System.out.println();
@@ -289,7 +291,8 @@ public class LaberintoIA {
         System.err.println("Nodos expandidos: "+ game.bsqP.getNodosExpandidos().size() +
                 " Profundidad: "+game.listaMovimientosProfundidad.get(0).getProfundidad() +
                 " Tiempo: "+tiempoFinalAmplitud+" Milisegundos");
-        game.eliminarRecorridoProfundidad();
-    }
+        game.eliminarRecorridoProfundidad();*/
+    
+    //}
 
 }
