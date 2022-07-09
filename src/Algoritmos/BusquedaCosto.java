@@ -117,21 +117,18 @@ public class BusquedaCosto {
                 }
 
                 mov = verficarCostoCaminos(fila, colum);
-                //System.err.println("movimientos: " + mov.length);
+                
                 verIzquierda = mov[0];
                 verArriba = mov[1];
                 verDerecha = mov[2];
                 verAbajo = mov[3];
 
-                /*System.err.println("IZ: " + verIzquierda);
-            System.err.println("ARR: " + verArriba);
-            System.err.println("DER: " + verDerecha);
-            System.err.println("ABA: " + verAbajo);*/
+                
                 if (verIzquierda != 1000) {
 
                     if (verIzquierda == 0) {
                         verIzquierdaMeta = '5';
-                        //System.out.println("Meta IZ: " + verIzquierdaMeta);
+                        
                     }
 
                     if (verIzquierda == 4) {
@@ -156,7 +153,7 @@ public class BusquedaCosto {
 
                     if (verArriba == 0) {
                         verArribaMeta = '5';
-                        //System.out.println("Meta ARR: " + verArribaMeta);
+                        
                     }
 
                     if (verArriba == 4) {
@@ -179,7 +176,7 @@ public class BusquedaCosto {
 
                     if (verDerecha == 0) {
                         verDerechaMeta = '5';
-                        //System.out.println("Meta DER: " + verDerechaMeta);
+                        
                     }
 
                     if (verDerecha == 4) {
@@ -202,7 +199,7 @@ public class BusquedaCosto {
 
                     if (verAbajo == 0) {
                         verAbajoMeta = '5';
-                        //System.out.println("Meta ABA: " + verAbajoMeta);
+                        
                     }
 
                     if (verAbajo == 4) {
@@ -382,7 +379,7 @@ public class BusquedaCosto {
         this.nodosExpandidos = nodosExpandidos;
     }
 
-    //ordenamiento wuiki wuiki
+    
     public ArrayList<Nodo> ordenarMenorAMayor(ArrayList<Nodo> listaDeNodos) {
 
         Collections.sort(listaDeNodos, new Comparator<Nodo>() {
@@ -396,6 +393,14 @@ public class BusquedaCosto {
         }
 
         return listaDeNodos;
+    }
+
+    public long getTiempoInicial() {
+        return tiempoInicial;
+    }
+
+    public void setTiempoInicial(long tiempoInicial) {
+        this.tiempoInicial = tiempoInicial;
     }
 
 }

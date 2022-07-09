@@ -31,12 +31,6 @@ public class GestionArchivo {
                i++; // siguiente fila.
            }
            lector.close();
-           for(int n=0; n<10; n++){
-               for(int m=0; m<10; m++){
-                   System.out.print(laberinto[n][m] + " ");
-               }
-               System.out.println(""); 
-           }
 
        }
        catch(IOException e){

@@ -96,6 +96,7 @@ public class BusquedaAmplitud {
         char meta = '0';
         int acum = 1;
         long time = 0;
+        boolean ban1 = true, ban2 = true;
 
         try {
 
@@ -116,6 +117,12 @@ public class BusquedaAmplitud {
 
                 if (meta == '5') {
                     contMeta++;
+                    if(contMeta ==1){
+                        ban1 = false;
+                    }
+                    if(contMeta == 2){
+                        ban2 = false;
+                    }
 
                 }
 
